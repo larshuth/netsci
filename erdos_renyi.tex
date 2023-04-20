@@ -18,18 +18,36 @@ Hierbei ist zu beachten, dass wir mit \emph{alle Graphen} in der Regel entweder 
 Die Details der Analysen in den folgenden Kapiteln hängen von dieser Entscheidung ab --- allerdings ergeben sich meist keine qualitativen Unterschiede.
 Daher werden wir oft den für uns einfacheren Fall wählen.
 Je nach Wahl, ist der Grundraum von $\Gn$
-\begin{eqnarray}
-    \mathbb G_\text{ger}(n) &=&
-    \twoset{G(V,E)}{|V| = n \land E \subseteq V \times V}\\
-    \mathbb G_\text{unge}(n) &=&
+\begin{align}
+    \mathbb G_\text{ger}(n)  & =
+    \twoset{G(V,E)}{|V| = n \land E \subseteq V \times V} \\\label{eq:gerichtet_gn}
+    \mathbb G_\text{unge}(n) & =
     \twoset{G(V,E)}{|V| = n \land  E \subseteq \twoset{\set{u,v}}{u,v \in V \text{ mit } u \ne v}}.
-\end{eqnarray}
+\end{align}
 
 \noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
-\begin{eqnarray}
-    f_{\mathbb G_\text{ger}(n)}(G) &=& \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\\
-    f_{\mathbb G_\text{unge}(n)}(G) &=& \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
-\end{eqnarray}
+\begin{align}
+    f_{\mathbb G_\text{ger}(n)}(G)  & =  \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\label{eq:gleichverteilt_gerichtet_gn} \\
+    f_{\mathbb G_\text{unge}(n)}(G) & =  \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
+\end{align}
+
+Die geschlossene Form $| \mathbb G_\text{ger}(n) | = 2^{n^2}$ in \cref{eq:gleichverteilt_gerichtet_gn} ergibt sich daraus, dass ein gerichteter Graph $n^2$ potentielle Kanten hat (die Adjazenzmatrix hat $n \times n$ Einträge).
+Für jede dieser Kanten haben wir unabhängig genau zwei Möglichkeiten: sie existiert oder eben nicht.
+Analog sieht es für die $\binom n 2$ möglichen Kanten in einem ungerichteten Graphen aus.
+
+Beachte aber auch, dass formal \cref{eq:gerichtet_gn} und \cref{eq:gleichverteilt_gerichtet_gn} widersprüchlich scheinen.
+In \cref{eq:gerichtet_gn} fordern wir nur, dass die Knotenmenge~$V$ die Kardinalität $|V| = n$ hat.
+Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
+Die Wahl der Knotenbezeichner hat jedoch keinen Einfluss auf die Netzwerkeigenschaften.
+Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Kantenmengen in irgendeiner Form fixiert sind, z.B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
+
+\bigskip
+
+Ist das $\Gn$ Modell aber nun realistisch?
+Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
+Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
+Dies liegt unter anderem daran, dass $\Gn$ oft Graphen mit vielen Kanten erzeugt;
+intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{figure}[t]
     \begin{center}
@@ -43,11 +61,6 @@ Je nach Wahl, ist der Grundraum von $\Gn$
     \label{fig:kantenanzahl}
 \end{figure}
 
-Ist das $\Gn$ Modell realistisch?
-Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
-Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
-Dies liegt unter anderem daran, dass $\Gn$ oft Graphen mit vielen Kanten erzeugt;
-intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{observation}
     Sei $G(V,E)$ ein Graph, der zufällig aus $\Gn$ mit $n > 1$ gezogen wurde.
@@ -107,6 +120,7 @@ Wie erklärt sich das?
 In der Regel verursacht eine Kante Kosten:
 eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden, etc.
 Daher gibt es in den meisten Netzwerken einen gewissen Selektionsdruck, der dazu führt, dass jeder Knoten nur ausgewählte Nachbarn besitzt.
+Wir klassifizieren Netzwerktypen, die auffallend viele oder wenig Kanten haben:
 
 \begin{definition}
     Graphen \aside{dünne und dichte Graphen} mit $n$ Knoten und $m$ Kanten heißen \emph{dünn} (engl. sparse), wenn $m = \Oh{n \log n}$ gilt, und \emph{dicht} wenn $m = \Omega(n^2)$.
@@ -126,7 +140,7 @@ Im Folgenden betrachten wir zwei solcher Modelle.
 
 Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
 \begin{equation}
-    \gGnm = \twoset{G(V,E)}{G(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
+    \gGnm = \twoset{G}{G=(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
 \end{equation}
 Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f\colon \mathbb G \to [0,1]$}
 \begin{equation}
@@ -137,7 +151,7 @@ Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f
     Berechne $|\gGnm|$ für gerichtete und ungerichtete Graphen.
 \end{exercise}
 
-E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschrieb ein ähnliches Modell, das \Gnp-Modell --- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
+E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell --- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
 Um das Modell zu beschreiben, weichen wir von der bisherigen expliziten Definition der Grundmenge und Verteilung ab.
 Stattdessen, spezifizieren wir eine randomisierte Konstruktionsvorschrift:
 \begin{enumerate}
@@ -188,7 +202,7 @@ Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von
 Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
-    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{|E|} = p n^2. \qedhere \end{equation*}
+    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Kantenanzahl~$m$ in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
 \end{lemma}
 
 \begin{proof}
@@ -326,12 +340,12 @@ Idee: Wir müssen diese einfach überspringen!
 Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
 Zählen können wir sie nicht ohne wieder direkt quadratische Arbeit zu verrichten.
 
-Ganz einfach: wir fragen uns wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
+Ganz \aside{Effizientes Ziehen durch Überspringen von Nullen} einfach: wir fragen uns wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
 Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
 Wenn wir nun $\ell$ aus einer geeigneten Verteilung ziehen, haben wir zwei unterschiedliche Zufallsprozesse, deren Ausgabe aber nicht unterscheidbar ist.
 Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
-Zur Vereinfachung, stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
+Zur \aside{Statt $n \times n$ Matrix, nehmen wir einen $n^2$ Vektor an} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
 Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
 
@@ -340,7 +354,7 @@ Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ h
 \end{equation}
 
 \noindent
-Sei $X$ die Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
+Sei $X$ die \aside{Anzahl Nullen $X$ ist geometrisch verteilt} Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
 \begin{eqnarray}
     \prob{X = 0} &=& \prob{\text{Nächster Versuch: 1}} = p \\
     \prob{X = 1} &=& \prob{\text{Nächster Versuch: 0, dann 1}} = (1 - p)p \\
@@ -384,6 +398,9 @@ Es ergibt sich also der folgende einfache Algorithmus:
     Passe \cref{alg:linear-gnp} für ungerichtete Graphen an.
 \end{exercise}
 
+Jetzt müssen wir nur noch herausfinden, wie wir geometrische Sprünge effizient ziehen können.
+Hierzu kommt meist die Inversionsmethode zum Einsatz.
+
 \subsection{Inversionsmethode: Ziehen aus der geometrischen Verteilung}
 \label{sec:inversionsmethode}
 
@@ -400,7 +417,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
     \label{fig:geometric-distr}
 \end{figure}
 
-Die Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
+Die \aside{Inversionsmethode: effizientes Ziehen falls Umkehrfunktion bekannt} Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
 Wir betrachten die Methode hier am Beispiel der geometrischen Verteilung.
 In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(\ell)$ und die kumulative Verteilungsfunktion $F(\ell)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
 %
@@ -418,11 +435,11 @@ Betrachten wir die konkreten ersten drei Werte der Funktionen:
 
 
 Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
-Da wir einen determistischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
-wir erwarten eine uniforme Zufallsvariable $U \in [0, 1]$ als Eingabe.
+Da wir einen deterministischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
+wir erwarten eine uniforme Zufallsvariable $U \in [0, 1)$ als Eingabe.
 Wir können also z.B. prüfen:
 \begin{itemize}
-    \item Wenn $U < 0.2$ ist und dann den Wert $0$ zurückgeben.
+    \item Wenn $U < 0.2$ ist, dann gebe den Wert $0$ zurück.
           Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
 
     \item Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist. Falls ja, geben wir den Wert $1$ zurück.
@@ -442,7 +459,7 @@ Die Methode lässt sich aber auch auf andere Grundr\"aume $\Omega$ (inklusive ko
     Sei $X \in \Omega$ eine diskrete Zufallsvariable und $f(x)$ und $F(x)$ ihre Wahrscheinlichkeitsverteilung sowie die kumulative Verteilungsfunktion.
     Vereinfachend sei $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
     Dann existiert die Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$.
-    Sei $U$ eine uniforme Zufallsvariable aus $[0, 1]$.
+    Sei $U$ eine uniforme Zufallsvariable aus $[0, 1)$.
     Dann ist $X' = F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
 \end{theorem}
 
@@ -466,6 +483,14 @@ Die Methode lässt sich aber auch auf andere Grundr\"aume $\Omega$ (inklusive ko
 \bigskip
 \bigskip
 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{data/geometric-distr-inv_hat.pdf}
+    \end{center}
+    \caption{Die in \cref{eq:inverse-hat} berechnet Umkehrfunktion $\hat F^{-1}(U)$}
+
+\end{figure}
+
 Zurück \aside{Inversionsmethode für geometrische Verteilung} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
 ObdA sei $0 < p < 1$ (da $X$ sonst eine Konstante ist).
 Die kumulative Verteilungsfunktion lautet
@@ -476,23 +501,23 @@ Die kumulative Verteilungsfunktion lautet
     \ = \ 1 - (1-p)^{\ell+1},
 \end{equation}
 wobei wir in $(*)$ die geschlossene Form der $\ell$-ten Partialsumme der geometrischen Reihe nutzen $\sum_{i=0}^\ell x^\ell = (1 - x^{\ell+1})/(1 - x)$.
-Nun berechnen die Umkehrfunktion $F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen:
+Nun berechnen die Umkehrfunktion $\hat F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen.
+Hierbei nehmen wir zunächst an, dass die Funktion stetig wäre (daher schreiben wir $\hat F ^{-1}$ statt $F^{-1}$):
 \begin{eqnarray}
     U &=& F(\ell) = 1 - (1-p)^{\ell+1} \\
     \Leftrightarrow (1-p)^{\ell+1} &=& 1 - U \\
     \Leftrightarrow  (\ell+1) \log(1-p)  &=& \log(1 - U) \\
-    \Leftrightarrow  F^{-1}(U) := \log_{1-p}(1 - U) - 1 &=& \ell
+    \Leftrightarrow  \hat F^{-1}(U) := \log_{1-p}(1 - U) - 1 &=& \ell \label{eq:inverse-hat}
 \end{eqnarray}
 
-\noindent
-\textcolor{red}{TODO: Hier fehlt Runden!}
+Schließlich erhalten wir $F^{-1}(U) = \lceil \hat F^{-1} (U) \rceil$ durch Aufrunden der gerade berechneten Funktion.
 Zusammenfassen erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
 
 \begin{algorithm}[H]
     \If{p=0}{Gebe $\infty$ zurück}
     \ElseIf{p=1}{Gebe $0$ zurück}
     \Else{$U \gets \text{ziehen uniform aus $[0, 1)$}$\;
-    Gebe $\log_{1-p}(1 - U) - 1$ zurück.}
+    Gebe $\lceil \log_{1-p}(1 - U) - 1\rceil$ zurück.}
     \caption{Ziehen einer geometrischen Zufallsvariable}
     \label{alg:sample-geometric}
 \end{algorithm}
@@ -506,7 +531,7 @@ Grund hierfür ist, dass während \Gnp \emph{in Erwartung} $n^2p$ Kanten erzeuge
 
 Ähnlich wie zuvor, reduzieren wir das Ziehen der richtigen Position von \emph{Einsen} in der Adjazenzmatrix auf den eindimensionalen Fall.
 Im Folgenden werden wir also folgendes äquivalentes Problem lösen:
-Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldots, s_n}$ mit $|S| = n > k$.
+Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldots, s_N}$ mit $|S| = N > k$.
 
 \clearpage
 
@@ -552,19 +577,22 @@ Vereinfachend können wir also annehmen, dass der Strom mindestens $k$ Elemente 
 \noindent
 In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reservoir-sampling} für nur $k = 1$:
 \begin{theorem}\label{thm:reservoir-sampling}
-    \Cref{algo:reservoir-sampling} liefert für $k=1$ ein uniform gewähltes Element aus $S$.
+    Für $k=1$ liefert \cref{algo:reservoir-sampling} liefert ein uniform gewähltes Element $x\in S$.
 \end{theorem}
 \begin{proof}
-    Sei $n$ die Länge des Stroms und seien $s_1, \ldots, s_n$ die Elemente in der Reihenfolge wie sie aus dem Strom gelesen werden; oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$.
-    Sei $R$ die Zufallsvariable, die die Ausgabe des Algorithmus modelliert.
-    Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / n$ für alle $1 \le i \le n$.
+    Sei $N$ die Länge des Stroms (ist dem Algorithmus nicht bekannt).
+    Seien zudem $s_1, \ldots, s_N$ die Elemente in der Reihenfolge, in der sie aus dem Strom gelesen werden;
+    oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (d.h. alle Elemente sind unterschiedlich; falls nicht, können wir die Tuple $(s_i, i)$ betrachten).
+
+    Sei $R$ die Zufallsvariable, welche die Ausgabe des Algorithmus modelliert.
+    Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / N$ für alle $1 \le i \le N$.
     \begin{eqnarray}
         \prob{R = s_i} &=& \prob{\text{$s_i$ wird in Runde~$i$ gewält}} \cdot \prob{\text{$s_i$ wird nicht ersetzt}} \\
-        &=& \frac{1}{i} \cdot \underbrace{\prod_{j=i+1}^n \frac{j-1}{j}}_{\text{Teleskopprodukt}}
-        = \frac{1}{i} \cdot \frac{i}{n} = \frac{1}{n}
+        &=& \frac{1}{i} \cdot \underbrace{\prod_{j=i+1}^N \frac{j-1}{j}}_{\text{Teleskop-Produkt}}
+        = \frac{1}{i} \cdot \frac{i}{N} = \frac{1}{N}
     \end{eqnarray}
 
-    \noindent Insbesondere gilt also, dass $\prob{R = s_i} = 1/n$ unabhängig von $i$ oder $s_i$ ist.
+    \noindent Insbesondere gilt also, dass $\prob{R = s_i} = 1/N$ unabhängig von $i$ oder $s_i$ ist.
 \end{proof}
 
 \begin{exercise}
@@ -572,12 +600,91 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \end{exercise}
 
 Wir können also \Gnm Graphen mittels Reservoir Sampling erzeugen.
-Allerdings müssen wir pro potentieller Kante konstant viel Arbeit verrichten.
-Somit folgt eine Laufzeit von $\Theta(n^2)$.
+Allerdings entspricht jede potentielle Kante einem Element in $S = V \times V$, für das wir je $\Theta(1)$ Arbeit verrichten müssen;
+somit folgt eine Gesamtlaufzeit von $\Theta(n^2)$.
 
-\subsection{Ziehen mit Sprüngen}
+\subsection{Ziehen mit Lookups}
+Im Folgenden skizzieren wir einen alternativen Ansatz um $k$~Elemente ohne Zurücklegen aus dem Universum~$S$ zu ziehen.
+Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das wir um einige Details erweitern müssen, um eine praktisch schnelle Implementierung zu erreichen:
 
-\subsection{Ziehen mit Hashsets}
+\begin{algorithm}[H]
+    \KwIn{Eingabe: Universum~$S$, Stichprobengröße: $k$}
+    \KwOut{Menge $R$ mit $k$ zufällig ausgewählten Elementen}
+
+    Initialisiere $R = \emptyset$\;
+
+    \While{$|R| < k$}{
+        $x \gets $ zufälliges Element aus $S$\;
+        \If{$x \not\in R$}{
+            $R \gets R \cup \set{x}$
+        }
+    }
+
+    Gebe $R$ zurück
+
+    \caption{Basisalgorithmus für Ziehen ohne Zurücklegen}
+    \label{algo:basis-ziehen-ohne-zuruecklegen}
+\end{algorithm}
+
+\begin{lemma}\label{lemma:basis-ziehen-ohne-zuruecklegen-versuche}
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} benötigt in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k \le N$ Elemente zu ziehen.
+\end{lemma}
+
+\begin{proof}
+    Der Algorithmus baut $R$ inkrementell auf: wir beginnen mit $|R| = 0$ und fügen dann schrittweise je ein Element hinzu.
+    Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt um $R$ zu erzeugen.
+    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $|R| = i$ zu erreichen).
+    Per Konstruktion gilt $X = \sum_{i=1}^k X_i$ und aufgrund der Linearität des Erwartungswertes folgt
+
+    \begin{equation}
+        \expv{X} = \expv{\sum_{i=1}^k X_i} = \sum_{i=1}^k \expv{X_i}. \label{eq:basis-ziehen-ohne-zuruecklegen_expvX}
+    \end{equation}
+
+    Wir können also zunächst die Erwartungswerte $\expv{X_i}$ isoliert betrachten.
+    Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, d.h. $|R| = i - 1$.
+    Mit Wahrscheinlichkeit $q_i = (i-1) / N$ erwischen wir also ein bereits gezogenes Element und versuchen es erneut.
+    Mit Wahrscheinlichkeit $p_i = 1 - q_i = (N - (i - 1)) / N$ ziehen wir nun ein Element, dass noch nicht Teil von $R$ ist.
+    Es gilt also
+
+    \begin{align*}
+        \prob{X_i = 1}            & = p_i                  \\
+        \prob{X_i = 2}            & = (1 -p_i) p_i         \\
+        \vdots         \quad\quad & = \quad\quad \vdots    \\
+        \prob{X_i = 1 + \ell}     & = (1- p_i)^{\ell} p_i.
+    \end{align*}
+
+    Die Zufallsvariable $X_i - 1$ ist also geometrisch verteilt mit Erfolgswahrscheinlichkeit~$p_i$.
+    Es gilt daher $\expv{X_i} = 1 / p_i = N / (N - i + 1)$. Durch Einsetzen in \cref{eq:basis-ziehen-ohne-zuruecklegen_expvX} erhalten wir:
+    \begin{align}
+        \expv{X} & = \sum_{i=1}^k \frac{N}{N-(i-1)} = \sum_{i=0}^{k-1} \frac{N}{N - i}                                    \\
+                 & = N \sum_{i=N-k+1}^N \frac{1}{i}                                                                       \\
+                 & = N \left[ \left( \sum_{i=1}^N \frac{1}{i} \right) - \left( \sum_{i=1}^N \frac{1}{N-k} \right) \right] \\
+                 & = N \left[ H_N - H_{N-k} \right]
+    \end{align}
+
+    Im letzten Schritt nutzen wir die Definition $H_t = \sum_{i=1}^t 1/i$, also die $t$-te Partialsumme der Harmonischen Reihe.
+    Es gilt, dass $H_t = \ln t + \gamma + 1/(2t) + \varepsilon_t$, wobei $\gamma \approx 0.5772$ die Euler–Mascheroni Konstante ist und $0 \le \varepsilon_t \le N^{-2}/8$ ein verschwindender Fehlerterm ist.
+    Es folgt also:
+    \begin{align}
+        \expv{X} & = N \left[ H_N - H_{N-k} \right]                      \\
+                 & \ge N \left[ \ln N - \ln (N - k + 1) \right] + \Oh{1} \\
+                 & = \Oh{N \ln \frac{N}{N - k + 1}}
+    \end{align}
+\end{proof}
+
+\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen benötigt und somit optimal ist.
+Nur für $k \gets N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
+
+Auf der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
+Für $k > N / 2$ können wir zunächst das Komplement~$\bar R$ mit  $| \bar R | = N - k < N/2$ ziehen und dann alle Elemente außer solche in $\bar R$ ausgeben.
+Zwar benötigt die Komplementbildung während der Ausgabe $\Theta(N)$ Zeit, allerdings hat die Ausgabe ebenfalls Größe $\Omega(N)$, wodurch das asymptotisch optimal bleibt.
+
+Welche Datenstruktur benötigen wir für $R$? Sie sollte Existenzanfragen ($x \in R$?) und Einfügen ($R \gets R \cup \set{x}$) effizient durchführen können.
+Ein Hashset unterstützt beide Operationen in erwartet konstanter Zeit, wodurch sich eine erwartete Laufzeit von $\Oh{k}$ ergibt; dies ist optimal.
+
+
+
+
 
 
 \section{Kritische Punkte}
